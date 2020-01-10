@@ -20,3 +20,44 @@ public:
         return root;
     }
 };
+
+//另一种省内存方法
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+	// 思路：利用二叉搜索树左子树一定比自己小，右子树一定比自己大特性。
+	// 如果p和q都在某个节点一侧那这个节点虽然是p,q的公共祖先节点但是不是最低的
+	// 最低的那个祖先节点一定是刚好p在祖先节点某一侧，而q在另外一侧。
+	// 或者是就是p或p其中一个。
+	TreeNode* ancestorPtr = root;
+	//cout << ancestorPtr->val << "," << q->val << p->val << endl;
+	while(ancestorPtr!=NULL)
+	{
+		//cout << ancestorPtr->val << "," << q->val << p->val << endl;
+		// p,q都在ancestorPtr的左侧，此时ancestorPtr是公共祖先节点但不是最低的
+		// 因此继续往左侧遍历
+		if (ancestorPtr->val > p->val && ancestorPtr->val > q->val)
+		{
+			ancestorPtr = ancestorPtr->left;
+		}else if (ancestorPtr->val < p->val && ancestorPtr->val < q->val)
+		{
+			ancestorPtr = ancestorPtr->right;
+		}else
+			return ancestorPtr;
+			// 如果p,q分别在ancestorPtr的两侧，那么这个ancestorPtr就是最低的公共祖先节点
+			// 如果遍历到了p或q其中一个节点那么他们公共子节点就是当前遍历到的节点
+		
+	}
+	return NULL;
+}
+};
+
