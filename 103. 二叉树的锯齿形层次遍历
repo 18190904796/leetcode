@@ -1,0 +1,45 @@
+//给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if(root==nullptr) return {};
+        int flag=1;
+        vector<vector<int>> res;
+        stack<TreeNode*> a,b;
+        a.push(root);
+        while(!a.empty()||!b.empty())
+        {
+            vector<int>cur;
+            while(flag==1&&!a.empty())
+            {
+                root=a.top();
+                cur.push_back(root->val);
+                a.pop();
+                if(root->left!=nullptr)b.push(root->left);
+                if(root->right!=nullptr)b.push(root->right);
+
+            }
+            while(flag==-1&&!b.empty())
+            {
+                root=b.top();
+                cur.push_back(root->val);
+                b.pop();
+                if(root->right!=nullptr)a.push(root->right);
+                if(root->left!=nullptr)a.push(root->left);               
+            }
+            flag*=-1;
+            res.push_back(cur);
+        }
+        return res;
+    }
+};
+
