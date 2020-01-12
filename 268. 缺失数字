@@ -1,0 +1,14 @@
+//给定一个包含 0, 1, 2, ..., n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。
+//由于有0存在，所以是n*(n+1)/2
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n=nums.size();
+        int sum=0;
+        for(int i=0;i<n;i++)
+        {
+            sum+=nums[i];
+        }
+        return 0.5*n*(n+1)-sum;
+    }
+};
