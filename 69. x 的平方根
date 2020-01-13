@@ -1,0 +1,47 @@
+//*实现 int sqrt(int x) 函数。
+
+计算并返回 x 的平方根，其中 x 是非负整数。
+
+由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+*/
+//二分法
+class Solution {
+public:
+    int mySqrt(int x) {
+        if(x<=1) return x;
+        long long int left=0,right = x;
+        while(left<right)
+        {
+            long mid=left+(right-left)/2;
+            if(mid*mid==x) return mid;
+            if(mid*mid>x) right=mid;
+            else left=mid+1;
+        }
+        return right-1;
+    }
+};
+
+//牛顿法
+public class Solution {
+    public int MySqrt(int x) {
+        if(x<2)
+            return x;
+        double t = x;
+        double x0 = x;
+        x0 = x0/2 + t/(2*x0);
+        while(x0*x0 - t > 0.00001)
+            x0 = x0/2 + t/(2*x0);
+        return (int)x0;
+    }    
+}
+
+/*牛顿迭代法
+    f(x)=x^2-t
+    当f(x)=0时，x就为t的平方根
+    取(t,f(t))作为切点，取切线，切线与x轴相交点为x0
+    切线方程：y1 - f(x0) = f(x0)'(x1 - x0); 令y1=0
+    得：x1 = x0 / 2 + t / (2*x0);
+    取(x0,f(x0))作为切点，取切线，切线与x轴相交点为x1
+    重复上述操作
+    最后切点为(xn,f(xn))，此时f(xn)近似于0，xn为平方根
+**/
