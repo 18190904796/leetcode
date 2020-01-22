@@ -1,0 +1,53 @@
+给定一组唯一的单词， 找出所有不同 的索引对(i, j)，使得列表中的两个单词， words[i] + words[j] ，可拼接成回文串。
+
+示例 1:
+
+输入: ["abcd","dcba","lls","s","sssll"]
+输出: [[0,1],[1,0],[3,2],[2,4]] 
+解释: 可拼接成的回文串为 ["dcbaabcd","abcddcba","slls","llssssll"]
+
+示例 2:
+
+输入: ["bat","tab","cat"]
+输出: [[0,1],[1,0]] 
+解释: 可拼接成的回文串为 ["battab","tabbat"]
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/palindrome-pairs
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+class Solution {
+public:
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        vector<vector<int>> res;
+        unordered_map<string,int> m;
+        set<int> s;
+        for(int i=0;i<words.size();i++){
+            m[words[i]]=i;
+            s.insert(words[i].size());
+        }
+        for(int i=0;i<words.size();i++){
+            string t=words[i];
+            int len=t.size();
+            reverse(t.begin(),t.end());
+            if(m.count(t)&&m[t]!=i) res.push_back({i,m[t]});
+            auto a=s.find(len);
+            for(auto it=s.begin();it!=a;it++){
+                int d=*it;
+                if(isValid(t,0,len-d-1)&&m.count(t.substr(len-d))){
+                    res.push_back({i,m[t.substr(len-d)]});
+                }
+                if(isValid(t,d,len-1)&&m.count(t.substr(0,d))){
+                    res.push_back({m[t.substr(0,d)],i});
+                }
+            }
+        }
+        return res;
+    }
+    bool isValid(string t, int left,int right){
+        while(left<right){
+            if(t[left++]!=t[right--])return false;
+        }
+        return true;
+    }
+};
